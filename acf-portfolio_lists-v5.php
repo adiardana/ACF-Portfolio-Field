@@ -144,6 +144,8 @@ class acf_field_portfolio_lists extends acf_field {
 
 		if (!$portfolios) {
 			echo '<p>The current professional has no portfolio yet.</p>';
+			echo '<a class="button" target="_blank" title="Add new portfolio" href="'.admin_url('post-new.php?post_type=portfolio').'">Add New Portfolio</a>';
+			echo '<br/><br/><br/><br/>';
 		} else {
 			?>
 			<table class="widefat fixed" cellspacing="0">
