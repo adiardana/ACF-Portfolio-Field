@@ -63,6 +63,22 @@ class acf_field_portfolio_lists extends acf_field {
 
 	}
 
+	function get_portfolio_by_pro_id($id) {
+		if (!$id) return false;
+
+		$portfolios = get_posts( array(
+			'posts_per_page'   => -1,
+			'orderby'          => 'date',
+			'order'            => 'DESC',
+			'meta_key'         => 'owner',
+			'meta_value'       => $id,
+			'post_type'        => 'portfolio',
+			'post_status'      => 'publish',
+		));
+
+		return $portfolios;
+	}
+
 
 	/*
 	*  render_field_settings()
@@ -123,11 +139,33 @@ class acf_field_portfolio_lists extends acf_field {
 		*  Review the data of $field.
 		*  This will show what data is available
 		*/
+		global $post;
+		$portfolios = $this->get_portfolio_by_pro_id($post->ID);
 
-		echo '<pre>';
-			print_r( $field );
-		echo '</pre>';
-
+		if (!$portfolios) {
+			echo '<p>The current professional has no portfolio yet.</p>';
+		} else {
+			?>
+			<table class="widefat fixed" cellspacing="0">
+				<thead>
+					<tr>
+						<td class="manage-column column-columnname">ID</td>
+						<td class="manage-column column-columnname">Project Name</td>
+						<td class="manage-column column-columnname">Action</td>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach ($portfolios as $key => $p) { ?>
+						<tr class="<?php echo($key % 2 == 0 ? 'alternate' : '');?>" valign="top">
+							<td class="column-columnname"><?php echo $p->ID;?></td>
+							<td class="column-columnname"><?php echo $p->post_title;?></td>
+							<td class="column-columnname"><a class="button" title="Edit this portfolio" target="_blank" href="<?php echo get_edit_post_link( $p->ID );?>">Edit</a></td>
+						</tr>
+					<?php }?>
+				</tbody>
+			</table>
+			<?php
+		}
 
 		/*
 		*  Create a simple text input using the 'font_size' setting.
