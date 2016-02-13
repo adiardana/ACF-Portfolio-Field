@@ -30,20 +30,4 @@ function include_field_types_portfolio_lists( $version ) {
 }
 
 add_action('acf/include_field_types', 'include_field_types_portfolio_lists');
-
-
-
-
-// 3. Include field type for ACF4
-function register_fields_portfolio_lists() {
-
-	include_once('acf-portfolio_lists-v4.php');
-
-}
-
-add_action('acf/register_fields', 'register_fields_portfolio_lists');
-
-
-
-
 ?>
